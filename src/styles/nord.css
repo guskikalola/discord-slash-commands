@@ -1,0 +1,27 @@
+body {
+    background-color: #2e3440;
+}
+.pannel {
+    background-color: #3b4252;
+}
+.rcorners {
+    border-color: #3b4252;
+}
+#footer {
+    background-color: #434c5e;
+}
+#chat-input {
+    background-color: #4c566a;
+}
+#config-container {
+    background-color: #434c5e;
+}
+#attach-button-svg:hover {
+    fill: #eceff4;
+}
+#config-type:hover {
+    fill: #eceff4;
+}
+.config-client {
+    background-color: #434c5e;
+}

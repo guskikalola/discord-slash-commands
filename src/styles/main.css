@@ -1,0 +1,115 @@
+body {
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+.rcorners {
+    border-radius: 25px;
+    border-width: 2px;
+}
+.center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+/* Pannels behaviour */
+.flex-container {
+    display: flex;
+    flex-direction: row;
+}
+.flex-item {
+    flex: 1;
+}
+.pannel-container {
+    justify-content: center;
+}
+.pannel {    
+    margin: 0 auto;
+    width: 90%;
+    height: 100%;
+}
+#user-pannels {
+    width: 90vw;
+    min-height: 85vh;
+}
+
+/* Footer setup */
+#footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 6vh;
+    z-index: 10;
+    left: 0;
+    align-items: baseline;
+    padding-left: 1vw;
+}
+/* Icons */
+.icon {
+    width: 5vh;
+}
+.svg * {
+    margin: 10% auto;
+}
+
+/* Config */
+#config-container {
+	position: relative;
+	width: 90%;
+	height: 86%;
+	left: 5%;
+	top: 5%;
+}
+#config-type {
+	position: relative;
+	width: 1vw;
+	height: 2vh;
+	left: 94%;
+	top: 3%;
+    cursor: pointer;
+}
+#json-config {
+	position: relative;
+	left: 1vw;
+	width: 95%;
+	top: 4vh;
+	height: 90%;
+    overflow-y: scroll  ;
+}
+.config-client {
+	position: relative;
+	height: 2vh;
+	top: 2vh;
+	margin: 0px;
+	width: 73%;
+	left: 50%;
+	transform: translate(-50%,0);
+}
+/* Chat */
+#attach-button * {
+    position: relative;
+    top:8px;
+    bottom: 0;
+    width: 5vh;
+    cursor: pointer;
+}
+#chat-input {
+	position: relative;
+	width: 92%;
+    min-height: 40px;
+    height: -moz-fit-content;
+    height: fit-content;
+	left: 50%;
+	top: 98%;
+	transform: translate(-50%,-40px);
+    display: flex;
+}
+#chat-type-container {
+	position: relative;
+	top: 39px;
+	width: 32vw;
+	transform: translate(0vh,-100%);
+}
