@@ -8,11 +8,11 @@ import $ from "jquery";
  * Discord slash command helper
  * 
  * @author guskikalola <guskikalola@gmail.com>
- * @version 07.02.2021
+ * @version 08.02.2021
  * 
  */
 /* Discord */
-const endpoint = "http://127.0.0.1:4586/https://discord.com/api/v8/";
+const endpoint = "https://discord.com/api/v8/";
 var data = {
     "client" : {
         "id" : "",
@@ -39,21 +39,6 @@ var footer = new Vue({
         "github": GitHub
     }
 })
-
-/* jQuery */
-window.jQuery = $;
-window.$ = $;
-
-/* Interactive */
-// var typing = false;
-// const input = document.getElementById("chat-type-container");
-// $(document).click(function(event) { 
-//   var $target = $(event.target);
-//   if(!$target.closest('#chat-type').length) {
-//     typing = false;
-//   } else typing = true;
-// });
-
 
 /* Disable back key */
 window.location.hash = "no-back-button";
@@ -86,14 +71,11 @@ configType.onclick = async function() {
     var res = fetch(endpoint+"applications/"+data.client.id+"/guilds/"+data.client.guild+"/commands",{method: "GET", headers:{
         "Authorization":"Bot " + data.client.id
     }})
-
-
-    console.log(res)
-    res.then(console.table)
-
-    var commands = await res.text();
-
-    configJson.innerText = JSON.stringify(commands);
-    console.log(commands);
+    res.then(res=>res.json())
+    .then(data => {
+        console.log(data)
+        var commands = data;
+        configJson.innerText = JSON.stringify(commands);
+    });
 
 }
