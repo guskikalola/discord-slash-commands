@@ -1,18 +1,22 @@
 import Vue from "vue";
+import GitHub from "./img/github-icon.svg";
+import * as hljs from "highlight.js/lib/core.js";
+import json from "highlight.js/lib/languages/json.js"
+hljs.registerLanguage("json",json);
+/*import $ from "jquery";*/
+/* CSS Styles */
 import nord from "./styles/nord.css";
 import main from "./styles/main.css";
-import GitHub from "./img/github-icon.svg";
-import $ from "jquery";
 
 /** 
  * Discord slash command helper
  * 
  * @author guskikalola <guskikalola@gmail.com>
- * @version 08.02.2021
+ * @version 09.02.2021
  * 
  */
 /* Discord */
-const endpoint = "https://discord.com/api/v8/";
+const endpoint = "https://discordapp.com/api/v8/";
 var data = {
     "client" : {
         "id" : "",
@@ -52,7 +56,7 @@ window.onhashchange = function(){
 }
 
 const configJson = document.getElementById("json-config");
-const configType = document.getElementById("config-container");
+const configType = document.getElementById("config-type");
 
 const configToken = document.getElementById("token");
 const configId = document.getElementById("id");
@@ -68,14 +72,13 @@ configType.onclick = async function() {
 
     console.log(data.client);
 
-    var res = fetch(endpoint+"applications/"+data.client.id+"/guilds/"+data.client.guild+"/commands",{method: "GET", headers:{
-        "Authorization":"Bot " + data.client.id
+    var res = fetch(endpoint+"applications/"+data.client.id+"/guilds/"+data.client.guild+"/commands",{mode:"cors",method: "GET", headers:{
+        "Authorization":"Bot " + data.client.token
     }})
     res.then(res=>res.json())
     .then(data => {
-        console.log(data)
-        var commands = data;
-        configJson.innerText = JSON.stringify(commands);
+        var res = JSON.stringify(data,null,"    ");
+        configJson.innerHTML = "<pre>"+hljs.highlight("json",res).value+"</pre>";
     });
 
 }

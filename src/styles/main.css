@@ -1,5 +1,5 @@
 body {
-    overflow-y: hidden;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 .rcorners {
@@ -46,13 +46,16 @@ body {
     left: 0;
     align-items: baseline;
     padding-left: 1vw;
+    pointer-events: none;
 }
 /* Icons */
 .icon {
     width: 5vh;
+    pointer-events: all;
 }
 .svg * {
     margin: 10% auto;
+    pointer-events: all;
 }
 
 /* Config */

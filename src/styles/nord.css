@@ -8,7 +8,7 @@ body {
     border-color: #3b4252;
 }
 #footer {
-    background-color: #434c5e;
+    background-color: transparent;
 }
 #chat-input {
     background-color: #4c566a;
@@ -24,4 +24,16 @@ body {
 }
 .config-client {
     background-color: #434c5e;
+}
+.hljs-number {
+    color: #ebcb8b;
+}
+.hljs-attr {
+    color:#bf616a;
+}
+.hljs-string {
+    color: #d08770;
+}
+.hljs-literal {
+    color: #b48ead;
 }

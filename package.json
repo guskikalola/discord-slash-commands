@@ -4,6 +4,7 @@
   "description": "",
   "main": "app-bundle.js",
   "dependencies": {
+    "highlight.js": "^10.6.0",
     "vue": "^2.6.12"
   },
   "devDependencies": {
