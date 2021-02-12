@@ -6,6 +6,14 @@ body {
     border-radius: 25px;
     border-width: 2px;
 }
+.rcorners-r {
+    border-radius: 0px 25px 25px 0px;
+    border-width: 2px;
+}
+.rcorners-l {
+    border-radius: 25px 0px 0px 25px;
+    border-width: 2px;
+}
 .center {
     margin: 0;
     position: absolute;
@@ -30,6 +38,72 @@ body {
     margin: 0 auto;
     width: 90%;
     height: 100%;
+}
+.menu {
+	height:5vh;
+	width: 36%;
+	position:absolute;
+	left:25%;
+	top:4%;
+	transform:translate(-50%,-33%);
+}
+.menu-button {
+	height: 100%;
+	width: 10%;
+	position: relative;
+	right: -100%;
+	transform: translate(-100%,0);
+}
+.menu-button svg {
+	width: 50%;
+	left: 24%;
+	position: relative;
+	top: 23%;
+}
+.menu-options {
+	position: relative;
+	top: 0;
+}
+.option {
+    height: 5vh;
+    width: 100%;
+}
+.option p {
+    text-align: center;   
+    margin: 0;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    cursor:pointer;
+}
+.config-button {
+    vertical-align: middle;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    cursor: pointer;
+}
+.config-button p {
+    text-align: center;
+    flex: 1;
+    pointer-events: none;
+}
+#client-save {
+    height: 5vh;
+    width: 8vw;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 76%);
+}
+#client-config-button {
+    height:2vh;
+    width: 3vw;
+    position: absolute;
+    left:5%;
+    transform: translate(-10%,0);
+    top: 2%;
 }
 #user-pannels {
     width: 90vw;
@@ -60,11 +134,11 @@ body {
 
 /* Config */
 #config-container {
-	position: relative;
-	width: 90%;
-	height: 86%;
+	position: absolute;
 	left: 5%;
-	top: 5%;
+	top: 10%;
+	bottom:4%;
+	right:55%;
 }
 #config-type {
 	position: relative;
@@ -80,16 +154,33 @@ body {
 	width: 95%;
 	top: 4vh;
 	height: 90%;
-    overflow-y: scroll  ;
+    	overflow-y: auto;
+}
+#ui-config {
+	position: relative;
+	left: 1vw;
+	width:95%;
+	top: 4vh;
+	height: 90%;
+	overflow-y: auto;
+}
+#command-config-container {
+	position: relative;
+	height:-moz-fit-content;
+	height:fit-content;
 }
 .config-client {
 	position: relative;
-	height: 2vh;
+	height: fit-content;
+	height: -moz-fit-content;
 	top: 2vh;
-	margin: 0px;
+	margin-bottom: 1%;
 	width: 73%;
 	left: 50%;
 	transform: translate(-50%,0);
+}
+.config-client:empty:not(:focus):before{
+	content:attr(data-text);
 }
 /* Chat */
 #attach-button * {
@@ -100,19 +191,19 @@ body {
     cursor: pointer;
 }
 #chat-input {
-	position: relative;
-	width: 92%;
+    position: absolute;
     min-height: 40px;
     height: -moz-fit-content;
     height: fit-content;
-	left: 50%;
-	top: 98%;
-	transform: translate(-50%,-40px);
+    transform: translate(7%,-19px);
+    bottom:0;
     display: flex;
+    max-height:50%;
+    overflow-y:auto;
 }
 #chat-type-container {
 	position: relative;
-	top: 39px;
+	top: 100%;
 	width: 32vw;
-	transform: translate(0vh,-100%);
+	/*transform: translate(0vh,-100%);*/
 }

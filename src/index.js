@@ -2,8 +2,8 @@ import Vue from "vue";
 import GitHub from "./img/github-icon.svg";
 import * as hljs from "highlight.js/lib/core.js";
 import json from "highlight.js/lib/languages/json.js"
-hljs.registerLanguage("json",json);
-/*import $ from "jquery";*/
+hljs.registerLanguage("json", json);
+import $ from "jquery";
 /* CSS Styles */
 import nord from "./styles/nord.css";
 import main from "./styles/main.css";
@@ -12,34 +12,31 @@ import main from "./styles/main.css";
  * Discord slash command helper
  * 
  * @author guskikalola <guskikalola@gmail.com>
- * @version 09.02.2021
+ * @version 12.02.2021
  * 
  */
 /* Discord */
 const endpoint = "https://discordapp.com/api/v8/";
 var data = {
-    "client" : {
-        "id" : "",
-        "token" : ""
+    "client": {
+        "id": "",
+        "token": ""
     },
-    "guild" : ""
+    "guild": ""
 }
-
-/* Vue */
-var interactive = {
-    typingContent : ""
-}
+/* Styling */
 var style = "nord"; // Default theme is nord
 function changeStyle(style) {
-    switch(style) {
+    switch (style) {
         case "nord":
             nord.use();
             break;
     }
 }
+/* Vue */
 var footer = new Vue({
-    el:"#footer",
-    data:{
+    el: "#footer",
+    data: {
         "github": GitHub
     }
 })
@@ -49,36 +46,177 @@ window.location.hash = "no-back-button";
 
 // Again because Google Chrome doesn't insert
 // the first hash into the history
-window.location.hash = "Again-No-back-button"; 
+window.location.hash = "Again-No-back-button";
 
-window.onhashchange = function(){
+window.onhashchange = function () {
     window.location.hash = "no-back-button";
 }
+window.onbeforeunload = function () {
+    return "Cats";
+}
 
-const configJson = document.getElementById("json-config");
 const configType = document.getElementById("config-type");
+var $jsonConf = $("#json-config");
 
-const configToken = document.getElementById("token");
-const configId = document.getElementById("id");
-const configGuild = document.getElementById("guild");
+// Hide JSON configuration preview 
+$("#json-config").hide();
+// Hide UI configuration and show client config
+$("#ui-config").hide();
+$("#config-type").hide();
+$("#client-config-container").show();
 
+/* Setup UI */
+
+
+var options = new Map();
+$(".menu").each((index, element) => {
+    var $target = $(element).children(".menu-button");
+    var $menu = $(element).children(".menu-options");
+    $menu.hide();
+    $target.on("click", () => {
+        if (!$menu.is(":visible")) {
+            // Clear old options and append new ones
+            $menu.empty();
+            options.get($menu.attr("id")).forEach(option => {
+                var $optionElem = $("<div/>",{
+                    class:"option rcorners",
+                    id:`${$menu.attr("id")}-${$menu.children().length}`
+                });
+                $optionElem.on("click", option.callback);
+                $optionElem.append("<p>"+option.text+"</p>");
+                $menu.append($optionElem)
+            })
+
+            $menu.show();
+            $target.children("svg").css("transform", "rotate(180deg)");
+        } else {
+            $menu.empty();
+            $menu.hide();
+            $target.children("svg").css("transform", "rotate(0deg)")
+        }
+
+    })
+
+});
+
+
+/* Command configuration body */
+// TODO: Fill with UI information
+var commandConfig = {
+    "name": "test",
+    "description": "test temporal command structure",
+    "options": [
+        {
+            "name": "temporal option",
+            "description": "foo",
+            "type": 3,
+            "required": true,
+            "choices": [
+                {
+                    "name": "Foo",
+                    "value": "FOO"
+                }
+            ]
+        }
+    ]
+}
+/** Used to update commands list */
+var availableCommands = [];
+function updateCommandList() {
+	if(/\d/.test(data.client.token)) { 
+        var res = fetch(endpoint+"applications/"+data.client.id+"/guilds/"+data.guild+"/commands",
+        {mode:"cors",method: "GET", 
+            headers:{
+                    "Authorization":"Bot " + data.client.token
+    
+            }
+        });
+        res.then(res=>res.json())
+        .then(data => {
+		var i = 1;
+		data.forEach(command => {
+			console.log(command);
+			options.get("command-selection-options")[i] = {text:command.name, callback: function() {
+				commandConfig = command;
+				$jsonConf.html("<pre>" + hljs.highlight("json", JSON.stringify(command,null,"    ")).value + "</pre>");
+ 
+			}};
+			
+			i++;
+		});
+        });
+	} else console.error("Invalid client config");
+}
+/* BUTTON : Client save */
+$("#client-save").on("click", function() {
+
+	var $token = $("#token");
+	var $id = $("#id");
+	var $guild = $("#guild");
+	// Update client configuration
+	data.client.id = $id.text();
+	data.client.token = $token.text();
+	data.guild = $guild.text();
+	// Hide client config
+	$("#client-config-container").hide();
+	// Make UI config visible again
+	$("#ui-config").show();
+	$("#config-type").show();
+	updateCommandList();
+});
+/* BUTTON: Configure client */
+$("#client-config-button").on("click", function() {
+	if(!$("#client-config-container").is(":visible")) {
+		$("#token").text(data.client.token);
+		$("#id").text(data.client.id);
+		$("#guild").text(data.guild);
+		$("#client-config-container").show();
+		$("#config-type").hide();
+		$("#json-config").hide();
+	}  
+
+});
+/* MENU : Commands selector */
+options.set("command-selection-options", []);
+// Create new command
+options.get("command-selection-options").push({
+    "text": "+ Create new command",
+    "callback": function () {
+        var configuration = JSON.stringify(commandConfig, null, "    ");
+	            $jsonConf.html("<pre>" + hljs.highlight("json", configuration).value + "</pre>");
+ 
+       commandConfig.name = "Command name";
+        commandConfig.description = "Command description";
+        commandConfig.options = [
+            {
+                "name": "Example option",
+                "description": "Example option description",
+                "type": 3,
+                "required": true,
+                "choices": [
+                    {
+                        "name": "Foo",
+                        "value": "FOO"
+                    }
+                ]
+            }
+        ]
+    }
+})
 // Temporal functionality 
 // TODO : GUI configuratio and JSON configuration
-configType.onclick = async function() {
+$("#config-type").on("click", async function () {
 
-    data.client.id = configId.innerText;
-    data.client.token = configToken.innerText;
-    data.client.guild = configGuild.innerText;
+    var $uiConf = $("#ui-config");
+    if ($jsonConf.is(":visible")) {
+        $jsonConf.hide();
+        $uiConf.show();
+    } else {
+        $uiConf.hide();
+        // TODO: Get json from UI configuration
+        var configuration = JSON.stringify(commandConfig, null, "    ");
+        $jsonConf.html("<pre>" + hljs.highlight("json", configuration).value + "</pre>");
+        $jsonConf.show();
+    }
 
-    console.log(data.client);
-
-    var res = fetch(endpoint+"applications/"+data.client.id+"/guilds/"+data.client.guild+"/commands",{mode:"cors",method: "GET", headers:{
-        "Authorization":"Bot " + data.client.token
-    }})
-    res.then(res=>res.json())
-    .then(data => {
-        var res = JSON.stringify(data,null,"    ");
-        configJson.innerHTML = "<pre>"+hljs.highlight("json",res).value+"</pre>";
-    });
-
-}
+});

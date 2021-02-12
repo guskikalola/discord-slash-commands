@@ -23,7 +23,37 @@ body {
     fill: #eceff4;
 }
 .config-client {
-    background-color: #434c5e;
+    background-color: #4c566a;
+}
+.config-client:empty:not(:focus):before {
+    color: #d8dee9;
+}
+.config-client:not(:empty) {
+    color: #eceff4;
+}
+.config-button {
+    background-color: #3b4252;
+}
+.config-button:hover {
+    background-color: #2e3440;
+}
+.menu {
+    background-color:#4c566a;
+}
+.menu-options {
+    background-color:#81a1c1;
+}
+.menu-button {
+    background-color:#2e3440;
+}
+.menu-button svg {
+    fill:#eceff4;
+}
+.menu-button:hover svg{
+    fill:#81a1c1;
+}
+.option {
+    background-color: #5e81ac;
 }
 .hljs-number {
     color: #ebcb8b;
