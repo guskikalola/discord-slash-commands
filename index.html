@@ -8,16 +8,8 @@
     <div class="flex-container center" id="user-pannels">
         <div class="flex-item pannel-container" id="interface-pannel-container">
             <div class="pannel rcorners" id="interface-pannel">
-                <div class="config-client" id="token" contenteditable="true">
-                    token
-                </div>
-                <div class="config-client" id="id" contenteditable="true">
-                    id
-                </div>
-                <div class="config-client" id="guild" contenteditable="true">
-                    guild
-                </div>
                 <div id="config-container" class="rcorners">
+		    <div class="config-button rcorners" id="client-config-button"></div>
                     <svg id="config-type" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-eye" viewBox="0 0 16 16">
                         <path
@@ -27,10 +19,33 @@
                     </svg>
                     <!-- JSON preview -->
                     <div id="json-config">
-                    </div>
-
+                    </div> 
+			<!-- Bot client configuration -->
+                        <div id="client-config-container">
+                            <div class="config-client rcorners" id="token" contentEditable=true data-text="Bot token"></div>
+                            <div class="config-client rcorners" id="id" contentEditable=true data-text="Application id"></div>
+                            <div class="config-client rcorners" id="guild" contentEditable=true data-text="Target guild id"></div>
+			    <div class="config-button rcorners" id="client-save"><p>Save</p></div>
+                        </div>
                     <!-- UI config -->
+                    <div id="ui-config">
+			<!-- Commands configuration -->
+                        <div id="command-config-container">
+
+                        </div>
+                    </div>
                 </div>
+            </div>
+        </div>
+        <div class="menu rcorners" id="command-selection">
+            <div class="menu-button rcorners-r" id="command-selection-button">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" />
+                </svg>
+            </div>
+            <div class="menu-options rcorners" id="command-selection-options">
+                <!-- Available commands -->
             </div>
         </div>
         <div class="flex-item pannel-container" id="output-pannel-container">
@@ -51,7 +66,8 @@
     </div>
     <div id="footer" class="flex-container">
         <div class="icon" id="github">
-            <a href="https://github.com/guskikalola/discord-slash-commands"><span class="svg" v-html="github"></span></a>
+            <a href="https://github.com/guskikalola/discord-slash-commands"><span class="svg"
+                    v-html="github"></span></a>
         </div>
     </div>
     <!-- Webpack generated bundle -->
