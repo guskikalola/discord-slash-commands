@@ -2,8 +2,9 @@ import Vue from "vue";
 import GitHub from "./img/github-icon.svg";
 import * as hljs from "highlight.js/lib/core.js";
 import json from "highlight.js/lib/languages/json.js"
+import UITreeContainer from "./class/UITreeContainer.js";
 hljs.registerLanguage("json", json);
-import $ from "jquery";
+//import $ from "jquery";
 /* CSS Styles */
 import nord from "./styles/nord.css";
 import main from "./styles/main.css";
@@ -59,11 +60,56 @@ const configType = document.getElementById("config-type");
 var $jsonConf = $("#json-config");
 
 // Hide JSON configuration preview 
-$("#json-config").hide();
+$jsonConf.hide();
 // Hide UI configuration and show client config
 $("#ui-config").hide();
 $("#config-type").hide();
 $("#client-config-container").show();
+
+/**
+ * Function used to update the
+ * UI content
+ * @param {Object} command - New command body
+ */
+function updateUI(command) {
+
+	var $ui = $("#command-config-container");
+	// Clear previous UI Config elements
+	$ui.empty();
+	// Asign a root UITreeContainer element
+	var root = new UITreeContainer();
+	$ui.append(root.DOMElement);
+
+	// TEMPORAL TEST
+	root.addElement(new UITreeContainer());
+	root.addElement(new UITreeContainer());
+	root.addElement(new UITreeContainer());
+	root.addElement(new UITreeContainer());
+	var test = new UITreeContainer(); 
+	root.addElement(test);
+	test.addElement(new UITreeContainer());
+	test.addElement(new UITreeContainer());
+	var test2 = new UITreeContainer();
+	test.addElement(test2);
+	test2.addElement(new UITreeContainer());
+	test2.addElement(new UITreeContainer());
+	test2.addElement(new UITreeContainer());
+}
+
+/**
+ * Function used to update JSON preview
+ * and sync JSON and UI content
+ * @param {Object} command - New command body
+ */
+function updateJSON(command) {
+
+	// Update JSON preview content
+	$jsonConf.html("<pre>" + hljs.highlight("json", JSON.stringify(command,null,"    ")).value + "</pre>");
+
+	// Update UI 
+	updateUI(command);
+
+}
 
 /* Setup UI */
 
@@ -98,7 +144,6 @@ $(".menu").each((index, element) => {
     })
 
 });
-
 
 /* Command configuration body */
 // TODO: Fill with UI information
@@ -138,8 +183,7 @@ function updateCommandList() {
 			console.log(command);
 			options.get("command-selection-options")[i] = {text:command.name, callback: function() {
 				commandConfig = command;
-				$jsonConf.html("<pre>" + hljs.highlight("json", JSON.stringify(command,null,"    ")).value + "</pre>");
- 
+				updateJSON(commandConfig); 
 			}};
 			
 			i++;
@@ -181,10 +225,7 @@ options.set("command-selection-options", []);
 // Create new command
 options.get("command-selection-options").push({
     "text": "+ Create new command",
-    "callback": function () {
-        var configuration = JSON.stringify(commandConfig, null, "    ");
-	            $jsonConf.html("<pre>" + hljs.highlight("json", configuration).value + "</pre>");
- 
+    "callback": function () { 
        commandConfig.name = "Command name";
         commandConfig.description = "Command description";
         commandConfig.options = [
@@ -201,10 +242,11 @@ options.get("command-selection-options").push({
                 ]
             }
         ]
+	updateJSON(commandConfig);
     }
 })
 // Temporal functionality 
-// TODO : GUI configuratio and JSON configuration
+// TODO : GUI configuration and JSON configuration
 $("#config-type").on("click", async function () {
 
     var $uiConf = $("#ui-config");
@@ -214,8 +256,7 @@ $("#config-type").on("click", async function () {
     } else {
         $uiConf.hide();
         // TODO: Get json from UI configuration
-        var configuration = JSON.stringify(commandConfig, null, "    ");
-        $jsonConf.html("<pre>" + hljs.highlight("json", configuration).value + "</pre>");
+	updateJSON(commandConfig);
         $jsonConf.show();
     }
 

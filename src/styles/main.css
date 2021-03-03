@@ -207,3 +207,19 @@ body {
 	width: 32vw;
 	/*transform: translate(0vh,-100%);*/
 }
+/* Custom UI Elements */
+.UITreeContainer {
+
+	min-height: 10px;
+	min-width: 10px;
+	height: fit-content;
+	width: fit-content;
+	background-color: gray;
+
+}
+.UITreeContainerChild {
+
+	background-color:black;
+	border: 2px solid red;	
+
+}
