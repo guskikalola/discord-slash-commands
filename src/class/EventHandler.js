@@ -14,7 +14,6 @@ class Event {
 	}
 
 	emit(args) {
-
 		this.listeners.forEach(listener => {
 
 			listener(args);
@@ -49,8 +48,6 @@ class EventHandler {
 	}
 
 	emit(e,args) {
-
-
 		if(this.events.has(e)) {
 			this.events.get(e).emit(args);
 		}

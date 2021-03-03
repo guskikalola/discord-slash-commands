@@ -67,3 +67,6 @@ body {
 .hljs-literal {
     color: #b48ead;
 }
+.UIEmbedElement {
+    background-color: #2e3440;
+}

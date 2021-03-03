@@ -1,6 +1,5 @@
 
 import EventHandler from "./EventHandler.js";
-//import $ from "jquery";
 
 class UIElement {
 
@@ -11,9 +10,9 @@ class UIElement {
 
 
 		// Events
-		$(this.element).click(this.eventHandler.emit("click",[]));
-		$(this.element).hover(this.eventHandler.emit("hover",[]));
-		$(this.element).load(this.eventHandler.emit("load",[]));
+		$(this.element).on("click",()=>this.eventHandler.emit("click",[]));
+		$(this.element).on("mouseover",()=>this.eventHandler.emit("hover",[]));
+		$(document).ready(()=>this.eventHandler.emit("ready",[]));
 
 	}
 

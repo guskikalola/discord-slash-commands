@@ -1,19 +1,25 @@
+/* UI Elements */
+import UIElement from "./class/UIElement";
+import UIInput from "./class/UIInput";
+import UITreeContainer from "./class/UITreeContainer.js";
+import UICheckBox from "./class/UICheckBox";
+import UINumber from "./class/UINumber";
+/* VUE Stuff */
 import Vue from "vue";
 import GitHub from "./img/github-icon.svg";
-import * as hljs from "highlight.js/lib/core.js";
-import json from "highlight.js/lib/languages/json.js"
-import UITreeContainer from "./class/UITreeContainer.js";
-hljs.registerLanguage("json", json);
-//import $ from "jquery";
 /* CSS Styles */
 import nord from "./styles/nord.css";
 import main from "./styles/main.css";
+/* General Imports */
+import * as hljs from "highlight.js/lib/core.js";
+import json from "highlight.js/lib/languages/json.js"
+hljs.registerLanguage("json", json);
 
 /** 
  * Discord slash command helper
  * 
  * @author guskikalola <guskikalola@gmail.com>
- * @version 12.02.2021
+ * @version 03.03.2021
  * 
  */
 /* Discord */
@@ -67,9 +73,52 @@ $("#config-type").hide();
 $("#client-config-container").show();
 
 /**
+ * Function to translate a JSON element to
+ * UI elements
+ * @param {*} item JSON item to be translated
+ * @return {UIElement}
+ */
+function translateJSON(item,key) {
+
+    var UI;
+    console.log(item)
+    
+    switch(typeof item) {
+        // String -> UIInput
+        case "string":
+            console.debug("Adding String(UIInput)");
+            UI = new UIInput(item,key);
+            break;
+        case "object":
+            console.debug("Adding Object(UITreeContainer)");
+            UI = new UITreeContainer(key,"#2e3440","#4c566a");
+            Object.keys(item).forEach(key => {
+                var obj = item[key];
+                UI.addElement(translateJSON(obj, key), $("#command-config-container").outerHeight(true));
+            });
+            break;
+        case "boolean":
+            console.debug("Adding Boolean(UICheckBox)");
+            UI = new UICheckBox(item,key);
+            break;
+        case "number":
+            console.debug("Adding Number(UINumber)");
+            UI = new UINumber(item,key);
+            break;
+        default:
+            console.debug("Adding Default(UIElement)");
+            UI = new UIElement();
+            break;
+    }
+
+    return UI;
+
+}
+
+/**
  * Function used to update the
  * UI content
- * @param {Object} command - New command body
+ * @param {JSON} command - New command body
  */
 function updateUI(command) {
 
@@ -80,20 +129,12 @@ function updateUI(command) {
 	var root = new UITreeContainer();
 	$ui.append(root.DOMElement);
 
-	// TEMPORAL TEST
-	root.addElement(new UITreeContainer());
-	root.addElement(new UITreeContainer());
-	root.addElement(new UITreeContainer());
-	root.addElement(new UITreeContainer());
-	var test = new UITreeContainer(); 
-	root.addElement(test);
-	test.addElement(new UITreeContainer());
-	test.addElement(new UITreeContainer());
-	var test2 = new UITreeContainer();
-	test.addElement(test2);
-	test2.addElement(new UITreeContainer());
-	test2.addElement(new UITreeContainer());
-	test2.addElement(new UITreeContainer());
+	// Translate command JSON to UI
+    Object.keys(command).forEach(key =>{
+        var element = command[key];
+        root.addElement(translateJSON(element,key));
+        
+    })
 }
 
 /**
@@ -173,7 +214,6 @@ function updateCommandList() {
         {mode:"cors",method: "GET", 
             headers:{
                     "Authorization":"Bot " + data.client.token
-    
             }
         });
         res.then(res=>res.json())
@@ -217,6 +257,7 @@ $("#client-config-button").on("click", function() {
 		$("#client-config-container").show();
 		$("#config-type").hide();
 		$("#json-config").hide();
+        $("#ui-config").hide();
 	}  
 
 });
