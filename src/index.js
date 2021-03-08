@@ -81,16 +81,13 @@ $("#client-config-container").show();
 function translateJSON(item,key) {
 
     var UI;
-    console.log(item)
     
     switch(typeof item) {
         // String -> UIInput
         case "string":
-            console.debug("Adding String(UIInput)");
             UI = new UIInput(item,key);
             break;
         case "object":
-            console.debug("Adding Object(UITreeContainer)");
             UI = new UITreeContainer(key,"#2e3440","#4c566a");
             Object.keys(item).forEach(key => {
                 var obj = item[key];
@@ -98,15 +95,12 @@ function translateJSON(item,key) {
             });
             break;
         case "boolean":
-            console.debug("Adding Boolean(UICheckBox)");
             UI = new UICheckBox(item,key);
             break;
         case "number":
-            console.debug("Adding Number(UINumber)");
             UI = new UINumber(item,key);
             break;
         default:
-            console.debug("Adding Default(UIElement)");
             UI = new UIElement();
             break;
     }
@@ -133,7 +127,6 @@ function updateUI(command) {
     Object.keys(command).forEach(key =>{
         var element = command[key];
         root.addElement(translateJSON(element,key));
-        
     })
 }
 
@@ -149,6 +142,12 @@ function updateJSON(command) {
 
 	// Update UI 
 	updateUI(command);
+
+}
+
+window.debugJSON = function(JSON) {
+
+    updateJSON(JSON);
 
 }
 
